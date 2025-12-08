@@ -1,0 +1,21 @@
+{
+  "name": "phil-ai-workflow",
+  "version": "1.0.0",
+  "description": "Portable workflow system for managing work context across issue trackers, git branches, and task managers",
+  "author": {
+    "name": "Phil Beyer",
+    "url": "https://github.com/pjbeyer"
+  },
+  "homepage": "https://github.com/pjbeyer/phil-ai-workflow",
+  "repository": "https://github.com/pjbeyer/phil-ai-workflow",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "git",
+    "github",
+    "jira",
+    "omnifocus",
+    "productivity",
+    "task-management"
+  ]
+}

@@ -1,0 +1,72 @@
+# Profile Workflow Configuration Example
+#
+# Copy this file to: ~/Projects/{profile}/.workflow/overrides.yaml
+# Replace {profile} with: work, pjbeyer, play, or home
+#
+# This file controls how the workflow system behaves for this profile.
+
+profile_overrides:
+  # Issue Tracker Integration
+  # Options: "github", "jira", or "none"
+  #
+  # - github: Uses gh CLI to create/close GitHub issues automatically
+  #   Requires: gh CLI installed and authenticated (gh auth login)
+  #   Best for: Open source projects, personal projects with GitHub
+  #
+  # - jira: Prompts for manual Jira task creation/closure
+  #   Requires: Access to Jira board, manual task management
+  #   Best for: Enterprise/work projects using Jira
+  #
+  # - none: No issue tracking, branch and metrics only
+  #   Best for: Personal scripts, home automation, experiments
+  #
+  issue_tracker: github  # Change to: jira, none
+
+  # Branch Naming - Include Issue Number
+  # Options: true or false
+  #
+  # - true: Branch name includes issue number
+  #   Examples: feature/123-user-auth, fix/PROJ-456-broken-login
+  #   Best for: Tracking which branch resolves which issue
+  #
+  # - false: Branch name is just type and description
+  #   Examples: feature/user-auth, fix/broken-login
+  #   Best for: Simpler branch names when issues aren't tracked
+  #
+  branch_prefix_issue: true  # Change to: false
+
+  # OmniFocus Task Auto-Creation
+  # Options: true or false
+  #
+  # - true: Automatically creates OmniFocus inbox task on /work-start
+  #   Completes task on /work-finish
+  #   Requires: OmniFocus installed and running (macOS only)
+  #   Task includes: Issue URL, branch name, repository path
+  #   Graceful fallback if OmniFocus not available
+  #
+  # - false: No task management integration
+  #   Workflow continues without task creation
+  #
+  auto_create_omnifocus_task: false  # Change to: true
+
+# Profile-Specific Examples:
+#
+# work profile (GitHub + OmniFocus):
+#   issue_tracker: github
+#   branch_prefix_issue: true
+#   auto_create_omnifocus_task: true
+#
+# pjbeyer profile (GitHub only):
+#   issue_tracker: github
+#   branch_prefix_issue: false
+#   auto_create_omnifocus_task: false
+#
+# play profile (No tracking):
+#   issue_tracker: none
+#   branch_prefix_issue: false
+#   auto_create_omnifocus_task: false
+#
+# home profile (No tracking):
+#   issue_tracker: none
+#   branch_prefix_issue: false
+#   auto_create_omnifocus_task: false

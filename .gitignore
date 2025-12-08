@@ -1,0 +1,13 @@
+# Local settings
+.claude/*.local.md
+
+# OS files
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# Node (if any tooling added later)
+node_modules/
