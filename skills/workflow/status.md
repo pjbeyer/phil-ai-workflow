@@ -81,7 +81,7 @@ for repo_key in "${!repos[@]}"; do
         fi
 
         # Extract issue if possible
-        issue=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/extract-issue-from-branch.sh "$current" 2>/dev/null || echo "")
+        issue=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/extract-issue-from-branch.sh "$current" 2>/dev/null || echo "")
 
         # Determine staleness
         stale=""

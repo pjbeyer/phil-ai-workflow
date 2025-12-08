@@ -119,15 +119,15 @@ echo "Repository: $repo_path"
 echo ""
 
 # Step 4: Display Issue Context
-issue=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/extract-issue-from-branch.sh "$branch" 2>/dev/null || echo "")
+issue=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/extract-issue-from-branch.sh "$branch" 2>/dev/null || echo "")
 
 if [[ -n "$issue" ]]; then
-    issue_tracker=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker 2>/dev/null || echo "")
+    issue_tracker=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker 2>/dev/null || echo "")
 
     if [[ "$issue_tracker" == "github" ]]; then
-        repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-github-repo.sh)
+        repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-github-repo.sh)
 
-        if [[ -n "$repo" ]] && ~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/gh-authenticated.sh; then
+        if [[ -n "$repo" ]] && ${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/gh-authenticated.sh; then
             echo "================================"
             echo "Issue Context"
             echo "================================"
@@ -180,7 +180,7 @@ git status
 echo ""
 
 # Step 7: Check Out Branch
-current=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/current-branch.sh)
+current=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/current-branch.sh)
 
 if [[ "$current" != "$branch" ]]; then
     echo "Checking out branch: $branch"

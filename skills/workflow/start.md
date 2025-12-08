@@ -13,7 +13,7 @@ Orchestrate starting new work with full context tracking across issue tracker, g
 Detect profile:
 
 ```bash
-profile=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/detect-profile.sh)
+profile=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/detect-profile.sh)
 
 if [[ "$profile" == "unknown" ]]; then
     cwd=$(pwd)
@@ -56,13 +56,13 @@ echo ""
 Verify git repository:
 
 ```bash
-in_repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/in-git-repo.sh)
+in_repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/in-git-repo.sh)
 if [[ "$in_repo" == "false" ]]; then
     echo "Error: Not in a git repository"
     echo "Hint: cd to a project directory with git initialized"
     exit 1
 fi
-repo_root=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/repo-root.sh)
+repo_root=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/repo-root.sh)
 echo "Repository: $repo_root"
 ```
 
@@ -120,7 +120,7 @@ Parse and format as checklist for issue body.
 Determine issue tracker from profile config:
 
 ```bash
-issue_tracker=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker)
+issue_tracker=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker)
 echo "Issue tracker: $issue_tracker"
 ```
 
@@ -128,7 +128,7 @@ echo "Issue tracker: $issue_tracker"
 
 ```bash
 # Check authentication
-authenticated=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/gh-authenticated.sh)
+authenticated=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/gh-authenticated.sh)
 if [[ "$authenticated" == "false" ]]; then
     echo "Error: gh CLI not authenticated"
     echo "Run: gh auth login"
@@ -136,7 +136,7 @@ if [[ "$authenticated" == "false" ]]; then
 fi
 
 # Get repo name
-repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-github-repo.sh)
+repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-github-repo.sh)
 if [[ -z "$repo" ]]; then
     echo "Error: Could not detect GitHub repo"
     echo "Hint: Ensure origin remote is set"
@@ -198,7 +198,7 @@ echo "✓ No issue tracker configured (home profile)"
 Generate branch name:
 
 ```bash
-branch_prefix_issue=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" branch_prefix_issue)
+branch_prefix_issue=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" branch_prefix_issue)
 [[ -z "$branch_prefix_issue" ]] && branch_prefix_issue="false"
 
 # Sanitize description
@@ -216,7 +216,7 @@ echo "Branch name: $branch_name"
 Check if on main/master:
 
 ```bash
-current=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/current-branch.sh)
+current=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/current-branch.sh)
 if [[ "$current" != "main" ]] && [[ "$current" != "master" ]]; then
     echo "⚠️  Currently on: $current (not main/master)"
 fi
@@ -245,7 +245,7 @@ fi
 Check if enabled:
 
 ```bash
-auto_create_task=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" auto_create_omnifocus_task)
+auto_create_task=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" auto_create_omnifocus_task)
 [[ -z "$auto_create_task" ]] && auto_create_task="false"
 ```
 
@@ -254,9 +254,9 @@ If enabled, create task:
 ```bash
 task_note="Issue: $issue_url
 Branch: $branch_name
-Repository: $(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/repo-root.sh)
+Repository: $(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/repo-root.sh)
 
-Started: $(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/format-datetime.sh)"
+Started: $(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/format-datetime.sh)"
 
 osascript <<EOF
 tell application "OmniFocus"
@@ -285,7 +285,7 @@ mkdir -p "$metrics_dir"
 metrics_file="$metrics_dir/$profile-$(date +%Y-%m).json"
 
 # Append event (JSON lines format)
-echo "{\"event\":\"work_started\",\"profile\":\"$profile\",\"date\":\"$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/format-datetime.sh)\",\"issue\":\"$issue_number\",\"branch\":\"$branch_name\",\"type\":\"$work_type\"}" >> "$metrics_file"
+echo "{\"event\":\"work_started\",\"profile\":\"$profile\",\"date\":\"$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/format-datetime.sh)\",\"issue\":\"$issue_number\",\"branch\":\"$branch_name\",\"type\":\"$work_type\"}" >> "$metrics_file"
 
 echo "ℹ️  Metrics recorded"
 ```
@@ -298,7 +298,7 @@ echo "ℹ️  Metrics recorded"
 Profile: $profile
 Issue: $issue_url
 Branch: $branch_name
-Repository: $(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/repo-root.sh)
+Repository: $(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/repo-root.sh)
 
 Next steps:
 1. Make changes in your working directory

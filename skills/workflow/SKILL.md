@@ -77,7 +77,7 @@ This skill provides four operations for managing work context across issue track
 
 ## Utility Scripts
 
-All operations use standalone executable scripts located in `~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/`.
+All operations use standalone executable scripts located in `${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/`.
 
 **Design Principles:**
 - Scripts write results to stdout, errors to stderr
@@ -96,7 +96,7 @@ Detect which profile the user is working in. Supports three detection modes:
 3. **Profile subdirectories**: `~/Projects/{work,pjbeyer,play,home}/*`
 
 ```bash
-profile=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/detect-profile.sh)
+profile=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/detect-profile.sh)
 # Returns: "work", "pjbeyer", "play", "home", or "unknown"
 
 if [[ "$profile" == "unknown" ]]; then
@@ -138,7 +138,7 @@ plugin_mappings:
 
 **Check if in git repository**:
 ```bash
-in_repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/in-git-repo.sh)
+in_repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/in-git-repo.sh)
 if [[ "$in_repo" == "false" ]]; then
     echo "Error: Not in a git repository"
     exit 1
@@ -147,13 +147,13 @@ fi
 
 **Get current branch**:
 ```bash
-current=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/current-branch.sh)
+current=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/current-branch.sh)
 # Returns: branch name like "feature/123-description" or empty string
 ```
 
 **Get repository root**:
 ```bash
-repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/repo-root.sh)
+repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/repo-root.sh)
 # Returns: /Users/pjbeyer/Projects/profile/project or empty string
 ```
 
@@ -162,14 +162,14 @@ repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/repo-roo
 Load profile-specific configuration from `{profile}/.workflow/overrides.yaml`:
 
 ```bash
-issue_tracker=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker)
+issue_tracker=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker)
 # Returns: "github", "jira", "none", or empty string
 
-branch_prefix_issue=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" branch_prefix_issue)
+branch_prefix_issue=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" branch_prefix_issue)
 [[ -z "$branch_prefix_issue" ]] && branch_prefix_issue="false"
 # Returns: "true" or "false"
 
-auto_create_task=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" auto_create_omnifocus_task)
+auto_create_task=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" auto_create_omnifocus_task)
 [[ -z "$auto_create_task" ]] && auto_create_task="false"
 # Returns: "true" or "false"
 ```
@@ -186,7 +186,7 @@ profile_overrides:
 
 **Check authentication**:
 ```bash
-authenticated=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/gh-authenticated.sh)
+authenticated=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/gh-authenticated.sh)
 if [[ "$authenticated" == "false" ]]; then
     echo "Error: gh CLI not authenticated"
     echo "Run: gh auth login"
@@ -196,7 +196,7 @@ fi
 
 **Get repository name**:
 ```bash
-repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-github-repo.sh)
+repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-github-repo.sh)
 # Returns: "owner/repo-name" or empty string
 
 if [[ -z "$repo" ]]; then
@@ -207,7 +207,7 @@ fi
 
 **Extract issue from branch name**:
 ```bash
-issue=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/extract-issue-from-branch.sh "$branch_name")
+issue=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/extract-issue-from-branch.sh "$branch_name")
 # Returns: "123" from "feature/123-description"
 # Returns: "PROJ-123" from "feature/PROJ-123-description"
 # Returns: empty string if no issue found
@@ -217,10 +217,10 @@ issue=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/extract
 
 **For metrics and logs**:
 ```bash
-date=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/format-date.sh)
+date=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/format-date.sh)
 # Returns: "2025-11-15"
 
-datetime=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/format-datetime.sh)
+datetime=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/format-datetime.sh)
 # Returns: "2025-11-15 08:30:45"
 ```
 
@@ -530,7 +530,7 @@ If user doesn't have `.workflow/core/` specs:
 ```bash
 if [[ ! -f "/Users/pjbeyer/Projects/.workflow/core/branch-strategy.md" ]]; then
     echo "ℹ️  Using reference branch strategy"
-    echo "To customize: Copy ~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/reference/branch-strategy.md"
+    echo "To customize: Copy ${CLAUDE_PLUGIN_ROOT}/skills/workflow/reference/branch-strategy.md"
     echo "           to ~/Projects/.workflow/core/branch-strategy.md"
 fi
 ```
@@ -541,14 +541,14 @@ fi
 
 ```bash
 # Detect profile
-profile=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/detect-profile.sh)
+profile=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/detect-profile.sh)
 if [[ "$profile" == "unknown" ]]; then
     echo "Error: Not in a known profile directory"
     exit 1
 fi
 
 # Verify git repo
-in_repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/in-git-repo.sh)
+in_repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/in-git-repo.sh)
 if [[ "$in_repo" == "false" ]]; then
     echo "Error: Not in a git repository"
     exit 1

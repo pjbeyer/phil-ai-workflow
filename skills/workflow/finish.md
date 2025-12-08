@@ -15,7 +15,7 @@ Load utilities and detect profile:
 ```bash
 
 
-profile=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/detect-profile.sh)
+profile=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/detect-profile.sh)
 
 if [[ "$profile" == "unknown" ]]; then
     cwd=$(pwd)
@@ -43,14 +43,14 @@ if [[ "$profile" == "unknown" ]]; then
     fi
 fi
 
-in_repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/in-git-repo.sh)
+in_repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/in-git-repo.sh)
 if [[ "$in_repo" == "false" ]]; then
     echo "Error: Not in a git repository"
     exit 1
 fi
 
-repo_root=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/repo-root.sh)
-current=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/current-branch.sh)
+repo_root=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/repo-root.sh)
+current=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/current-branch.sh)
 
 # Display current context
 echo ""
@@ -81,7 +81,7 @@ echo "Finishing work on branch: $current"
 ## Step 2: Extract Issue Information
 
 ```bash
-issue_number=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/extract-issue-from-branch.sh "$current" || echo "")
+issue_number=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/extract-issue-from-branch.sh "$current" || echo "")
 
 if [[ -z "$issue_number" ]]; then
     echo "⚠️  Warning: Could not extract issue number from branch name"
@@ -98,14 +98,14 @@ If no issue number found, use AskUserQuestion:
 Get issue tracker config:
 
 ```bash
-issue_tracker=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker)
-repo=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-github-repo.sh)
+issue_tracker=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" issue_tracker)
+repo=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-github-repo.sh)
 ```
 
 **Check for PR** (if GitHub):
 
 ```bash
-if [[ -n "$repo" ]] && ~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/gh-authenticated.sh && [[ "$issue_tracker" == "github" ]]; then
+if [[ -n "$repo" ]] && ${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/gh-authenticated.sh && [[ "$issue_tracker" == "github" ]]; then
     pr_info=$(gh pr list --repo "$repo" --head "$current" --json state,number 2>/dev/null)
 
     if [[ -n "$pr_info" ]] && [[ "$pr_info" != "[]" ]]; then
@@ -266,7 +266,7 @@ else
         echo ""
 
         # Get profile config for enforcement
-        auto_create=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" "auto_create_doc_issues" || echo "false")
+        auto_create=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" "auto_create_doc_issues" || echo "false")
 
         if [[ "$auto_create" == "true" ]]; then
             # Auto-create issue
@@ -349,7 +349,7 @@ If deletion with `-d` fails, use AskUserQuestion:
 if git ls-remote --exit-code --heads origin "$current" &>/dev/null; then
     echo "Remote branch exists: origin/$current"
 
-    auto_delete=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" auto_delete_branch || echo "true")
+    auto_delete=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" auto_delete_branch || echo "true")
 
     if [[ "$auto_delete" != "true" ]]; then
         # Ask user
@@ -373,7 +373,7 @@ echo "✓ Deleted remote branch: origin/$current"
 ## Step 8: Update OmniFocus Task
 
 ```bash
-auto_create_task=$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/get-profile-config.sh "$profile" auto_create_omnifocus_task || echo "false")
+auto_create_task=$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/get-profile-config.sh "$profile" auto_create_omnifocus_task || echo "false")
 
 if [[ "$auto_create_task" == "true" ]]; then
     echo "Updating OmniFocus task..."
@@ -440,7 +440,7 @@ metrics_dir="/Users/pjbeyer/Projects/.workflow/metrics"
 metrics_file="$metrics_dir/$profile-$(date +%Y-%m).json"
 
 # Record completion event
-echo "{\"event\":\"work_finished\",\"profile\":\"$profile\",\"date\":\"$(~/.claude/plugins/cache/phil-ai-workflow/skills/workflow/scripts/format-datetime.sh)\",\"issue\":\"$issue_number\",\"branch\":\"$current\"}" >> "$metrics_file"
+echo "{\"event\":\"work_finished\",\"profile\":\"$profile\",\"date\":\"$(${CLAUDE_PLUGIN_ROOT}/skills/workflow/scripts/format-datetime.sh)\",\"issue\":\"$issue_number\",\"branch\":\"$current\"}" >> "$metrics_file"
 
 echo "ℹ️  Metrics recorded"
 ```
