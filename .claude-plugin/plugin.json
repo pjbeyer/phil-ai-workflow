@@ -1,6 +1,6 @@
 {
   "name": "phil-ai-workflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Portable workflow system for managing work context across issue trackers, git branches, and task managers",
   "author": {
     "name": "Phil Beyer",
