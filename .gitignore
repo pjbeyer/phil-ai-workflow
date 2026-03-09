@@ -11,3 +11,7 @@
 
 # Node (if any tooling added later)
 node_modules/
+
+# Dolt database files (added by bd init)
+.dolt/
+*.db
