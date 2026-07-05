@@ -3,5 +3,6 @@
   "backend": "dolt",
   "dolt_mode": "server",
   "dolt_database": "paw",
-  "project_id": "4fa23283-63f2-498d-9eac-ac7daca04934"
+  "project_id": "4fa23283-63f2-498d-9eac-ac7daca04934",
+  "last_bd_version": "1.1.0"
 }
