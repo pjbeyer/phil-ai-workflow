@@ -2,7 +2,6 @@
   "database": "dolt",
   "backend": "dolt",
   "dolt_mode": "server",
-  "dolt_database": "paw",
-  "project_id": "4fa23283-63f2-498d-9eac-ac7daca04934",
-  "last_bd_version": "1.1.0"
+  "dolt_database": "phil_ai_workflow",
+  "project_id": "af832219-ddc4-4cd9-b4f6-c465726170a1"
 }
