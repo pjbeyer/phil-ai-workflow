@@ -66,9 +66,3 @@
 # - github.token    → use GITHUB_TOKEN env var instead
 
 sync.remote: "git+https://github.com/pjbeyer/phil-ai-workflow.git"
-backup:
-    enabled: true
-    interval: 15m
-dolt:
-    port: 3307
-    auto-push: false
